@@ -40,18 +40,11 @@ vim.g.autoformat = false
 -- Ensure ~/.local/bin is in PATH for formatter binaries
 vim.env.PATH = vim.env.HOME .. "/.local/bin:" .. (vim.env.PATH or "")
 
--- netrw: thin list layout, keep the banner.
-vim.g.netrw_liststyle = 0
-vim.g.netrw_banner = 1
-
--- Force netrw to open files in the current window
-vim.g.netrw_browse_split = 0
-
--- Keep netrw from leaving leftover empty buffers when opening files
-vim.g.netrw_keepdir = 0
-
--- Disable command line suggestions (wildmenu)
-opt.wildmenu = false
-opt.wildmode = "list"
+-- Command line sugestões (wildmenu) em baixo
+opt.wildmenu = true
+opt.wildmode = "longest:full,full"
+opt.wildoptions = "pum"
+opt.wildignorecase = true
+opt.pumheight = 10
 
 

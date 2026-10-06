@@ -27,7 +27,7 @@ keymap("n", "N", "Nzzzv")
 -- Paste over highlighted text without losing original buffer register
 keymap("x", "<leader>p", [["_dP]])
 
---~/.config/nvim/lua/config/ ~/.config/nvim/lua/config/S~/.config/nvim/lua/config/y~/.config/nvim/lua/config/stem clipboard integration (<leader>y to copy to system clipboard)
+-- System clipboard integration (<leader>y to copy to system clipboard)
 keymap({ "n", "v" }, "<leader>y", [["+y]])
 keymap("n", "<leader>Y", [["+Y]])
 
@@ -49,3 +49,70 @@ keymap("n", "<leader>gP", function()
 end, { desc = "Git pull rebase" })
 
 keymap("n", "<leader>gd", "<cmd>Gdiffsplit<CR>", { desc = "Git diff split" })
+
+-- =============================================
+-- EDIÇÃO RÁPIDA
+-- =============================================
+
+-- Duplicate line (normal/visual)
+keymap("n", "<leader>c", "yyp", { desc = "Duplicate line" })
+keymap("v", "<leader>c", "y`>p", { desc = "Duplicate selection" })
+
+-- Select all
+keymap("n", "<C-a>", "ggVG", { desc = "Select all" })
+
+-- Undo break points (para desfazer em blocos)
+keymap("i", ",", ",<c-g>u")
+keymap("i", ".", ".<c-g>u")
+keymap("i", ";", ";<c-g>u")
+
+-- Replace word under cursor
+keymap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Replace word under cursor" })
+
+-- Indent/Deindent in visual mode (mantém seleção)
+keymap("v", "<", "<gv")
+keymap("v", ">", ">gv")
+
+-- Move lines up/down in normal mode
+keymap("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
+keymap("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
+
+-- Move lines in visual mode
+keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+
+-- Fast save
+keymap("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
+
+-- Quit all
+keymap("n", "<leader>Q", "<cmd>qa!<CR>", { desc = "Quit all" })
+
+-- Split navigation (Ctrl + seta)
+keymap("n", "<C-h>", "<C-w>h", { desc = "Move to left split" })
+keymap("n", "<C-j>", "<C-w>j", { desc = "Move to lower split" })
+keymap("n", "<C-k>", "<C-w>k", { desc = "Move to upper split" })
+keymap("n", "<C-l>", "<C-w>l", { desc = "Move to right split" })
+
+-- Resize splits with arrows
+keymap("n", "<C-Up>", "<cmd>resize +2<CR>", { desc = "Increase height" })
+keymap("n", "<C-Down>", "<cmd>resize -2<CR>", { desc = "Decrease height" })
+keymap("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "Decrease width" })
+keymap("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "Increase width" })
+
+-- Clear search highlight
+keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlight" })
+
+-- Buffer navigation
+keymap("n", "<S-h>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+keymap("n", "<S-l>", "<cmd>bnext<CR>", { desc = "Next buffer" })
+keymap("n", "<C-Tab>", "<cmd>bnext<CR>", { desc = "Next buffer" })
+keymap("n", "<C-S-Tab>", "<cmd>bprevious<CR>", { desc = "Previous buffer" })
+keymap("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Delete buffer" })
+
+-- Alternate file (last edited file)
+keymap("n", "<leader>fa", "<cmd>e #<CR>", { desc = "Alternate file" })
+
+-- Diagnostics
+keymap("n", "<leader>xn", vim.diagnostic.goto_next, { desc = "Next diagnostic" })
+keymap("n", "<leader>xp", vim.diagnostic.goto_prev, { desc = "Prev diagnostic" })
+keymap("n", "<leader>xf", vim.diagnostic.open_float, { desc = "Show diagnostic" })

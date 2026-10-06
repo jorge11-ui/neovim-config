@@ -13,6 +13,7 @@ return {
       { "<leader>fr", "<cmd>Telescope oldfiles<cr>", desc = "Recent files" },
       { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help" },
       { "<leader>fs", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Search in buffer" },
+
     },
     opts = function()
       local actions = require("telescope.actions")

@@ -7,7 +7,22 @@ return {
     "saghen/blink.cmp",
     opts = {
       cmdline = {
-        sources = {},
+        enabled = true,
+        keymap = {
+          preset = "cmdline",
+          ["<Right>"] = false,
+          ["<Left>"] = false,
+        },
+        sources = { "cmdline", "path", "buffer" },
+        completion = {
+          list = { selection = { preselect = false } },
+          menu = {
+            auto_show = function()
+              return vim.fn.getcmdtype() == ":"
+            end,
+          },
+          ghost_text = { enabled = true },
+        },
       },
       sources = {
         default = { "buffer" },
@@ -41,7 +56,7 @@ return {
           Lua = {
             runtime = { version = "LuaJIT" },
             diagnostics = { globals = { "vim" } },
-            workspace = { checkThirdParty = false, library = vim.api.nvim_get_runtime_file("", true) },
+            workspace = { checkThirdParty = false, library = {} },
             hint = { enable = false },
           },
         },
@@ -49,7 +64,10 @@ return {
 
       local lspconfig = require("lspconfig")
 
-      -- Ruff para diagnósticos (sublinhados vermelhos)
+      lspconfig.basedpyright.setup({
+        autostart = false,
+      })
+
       lspconfig.ruff.setup({
         on_attach = function(client)
           client.server_capabilities.hoverProvider = false
@@ -57,9 +75,12 @@ return {
         end,
       })
 
+
+
       local servers = {
         clangd = { "c", "cpp" },
         lua_ls = { "lua" },
+        cssls = { "css" },
       }
       for name in pairs(servers) do
         if vim.fn.executable(name == "lua_ls" and "lua-language-server" or name) == 1 then
@@ -70,6 +91,18 @@ return {
       local mapbuf = function(lhs, rhs, desc, buffer)
         vim.keymap.set("n", lhs, rhs, { buffer = buffer, silent = true, desc = desc })
       end
+
+      local lsp_enabled = true
+      vim.keymap.set("n", "<leader>lt", function()
+        if lsp_enabled then
+          vim.cmd("LspStop")
+          vim.notify("LSP desativado", vim.log.levels.INFO)
+        else
+          vim.cmd("LspStart")
+          vim.notify("LSP ativado", vim.log.levels.INFO)
+        end
+        lsp_enabled = not lsp_enabled
+      end, { desc = "Toggle LSP" })
 
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("user_lsp", { clear = true }),
